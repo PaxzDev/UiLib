@@ -1,1 +1,352 @@
 --will be put in here sooon
+
+--Currently broken but will be fixed, this tween shit doesn't work.
+
+--services
+
+local players = game:GetService("Players")
+local tweenService = game:GetService("TweenService")
+local runService = game:GetService("RunService")
+local coreGui = game:GetService("CoreGui")
+local uis = game:GetService("UserInputService")
+
+
+
+
+--vars
+local viewport = workspace.CurrentCamera.ViewportSize
+
+local Library = {}
+
+function Library:tween(object, goal, callback)
+	local tween = tweenService:Create(object, tweenInfo, goal)
+	tween.Completed:Connect(callback or function() end)
+	tween:Play()
+end
+
+function Library:validate(defaults, options)
+	for i, v in pairs(defaults) do
+		if options[i] == nil then
+			options[i] = v
+		end
+	end
+	return options
+end
+
+function Library:new(options) 
+	options = Library:validate({
+		name = "Apollo Lib"
+	}, options or {}) -- if options ==nil then give table otherwise give options 
+	
+	
+	local GUI = {
+		CurrentTab = nil
+	}
+	
+	
+	--Main frame
+	
+	do
+		-- StarterGui.ApolloLibrary
+		GUI["1"] = Instance.new("ScreenGui", runService:IsStudio() and players.LocalPlayer:WaitForChild("PlayerGui") or coreGui);
+		GUI["1"]["Name"] = [[ApolloLibrary]];
+		GUI["1"]["IgnoreGuiInset"] = true
+		-- StarterGui.ApolloLibrary.Main
+		GUI["2"] = Instance.new("Frame", GUI["1"]);
+		GUI["2"]["BackgroundColor3"] = Color3.fromRGB(57, 57, 57);
+		GUI["2"]["AnchorPoint"] = Vector2.new(0, 0);
+		GUI["2"]["Size"] = UDim2.new(0, 400, 0, 300);
+		GUI["2"]["Position"] = UDim2.fromOffset((viewport.X/2) - (GUI["2"].Size.X.Offset / 2), (viewport.Y/2) - (GUI["2"].Size.Y.Offset / 2));
+		GUI["2"]["Name"] = [[Main]];
+
+		-- StarterGui.ApolloLibrary.Main.UICorner
+		GUI["3"] = Instance.new("UICorner", GUI["2"]);
+		GUI["3"]["CornerRadius"] = UDim.new(0, 5);
+
+		-- StarterGui.ApolloLibrary.Main.DropShadowHolder
+		GUI["4"] = Instance.new("Frame", GUI["2"]);
+		GUI["4"]["ZIndex"] = 0;
+		GUI["4"]["BorderSizePixel"] = 0;
+		GUI["4"]["BackgroundTransparency"] = 1;
+		GUI["4"]["Size"] = UDim2.new(1, 0, 1, 0);
+		GUI["4"]["Name"] = [[DropShadowHolder]];
+
+		-- StarterGui.ApolloLibrary.Main.DropShadowHolder.DropShadow
+		GUI["5"] = Instance.new("ImageLabel", GUI["4"]);
+		GUI["5"]["ZIndex"] = 0;
+		GUI["5"]["BorderSizePixel"] = 0;
+		GUI["5"]["SliceCenter"] = Rect.new(49, 49, 450, 450);
+		GUI["5"]["ScaleType"] = Enum.ScaleType.Slice;
+		GUI["5"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["5"]["ImageTransparency"] = 0.5;
+		GUI["5"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+		GUI["5"]["Image"] = [[rbxassetid://6015897843]];
+		GUI["5"]["Size"] = UDim2.new(1, 47, 1, 47);
+		GUI["5"]["Name"] = [[DropShadow]];
+		GUI["5"]["BackgroundTransparency"] = 1;
+		GUI["5"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+
+		-- StarterGui.ApolloLibrary.Main.TopBar
+		GUI["6"] = Instance.new("Frame", GUI["2"]);
+		GUI["6"]["BackgroundColor3"] = Color3.fromRGB(48, 48, 48);
+		GUI["6"]["Size"] = UDim2.new(1, 0, 0, 30);
+		GUI["6"]["Name"] = [[TopBar]];
+
+		-- StarterGui.ApolloLibrary.Main.TopBar.UICorner
+		GUI["7"] = Instance.new("UICorner", GUI["6"]);
+		GUI["7"]["CornerRadius"] = UDim.new(0, 5);
+
+		-- StarterGui.ApolloLibrary.Main.TopBar.Extension
+		GUI["8"] = Instance.new("Frame", GUI["6"]);
+		GUI["8"]["BorderSizePixel"] = 0;
+		GUI["8"]["BackgroundColor3"] = Color3.fromRGB(48, 48, 48);
+		GUI["8"]["AnchorPoint"] = Vector2.new(0, 1);
+		GUI["8"]["Size"] = UDim2.new(1, 0, 0, 5);
+		GUI["8"]["Position"] = UDim2.new(0, 0, 1, 0);
+		GUI["8"]["Name"] = [[Extension]];
+
+		-- StarterGui.ApolloLibrary.Main.TopBar.Title
+		GUI["9"] = Instance.new("TextLabel", GUI["6"]);
+		GUI["9"]["TextXAlignment"] = Enum.TextXAlignment.Left;
+		GUI["9"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["9"]["TextSize"] = 14;
+		GUI["9"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["9"]["Size"] = UDim2.new(0.5, 0, 1, 0);
+		GUI["9"]["Text"] = options["name"];
+		GUI["9"]["Name"] = options["name"];
+		GUI["9"]["Font"] = Enum.Font.Gotham;
+		GUI["9"]["BackgroundTransparency"] = 1;
+
+		-- StarterGui.ApolloLibrary.Main.TopBar.Title.UIPadding
+		GUI["a"] = Instance.new("UIPadding", GUI["9"]);
+		GUI["a"]["PaddingTop"] = UDim.new(0, 1);
+		GUI["a"]["PaddingLeft"] = UDim.new(0, 8);
+
+		-- StarterGui.ApolloLibrary.Main.TopBar.ExitBtn
+		GUI["b"] = Instance.new("ImageLabel", GUI["6"]);
+		GUI["b"]["BorderSizePixel"] = 0;
+		GUI["b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["b"]["AnchorPoint"] = Vector2.new(1, 0);
+		GUI["b"]["Image"] = [[rbxassetid://2777727756]];
+		GUI["b"]["Size"] = UDim2.new(0, 22, 0, 22);
+		GUI["b"]["Name"] = [[ExitBtn]];
+		GUI["b"]["BackgroundTransparency"] = 1;
+		GUI["b"]["Position"] = UDim2.new(1, -4, 0, 4);
+
+		-- StarterGui.ApolloLibrary.Main.TopBar.line
+		GUI["c"] = Instance.new("Frame", GUI["6"]);
+		GUI["c"]["BorderSizePixel"] = 0;
+		GUI["c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["c"]["AnchorPoint"] = Vector2.new(0, 1);
+		GUI["c"]["Size"] = UDim2.new(1, 0, 0, 1);
+		GUI["c"]["Position"] = UDim2.new(0, 0, 1, 0);
+		GUI["c"]["Name"] = [[line]];
+
+		-- StarterGUI.ApolloLibrary.Main.ContentContainer
+		GUI["1b"] = Instance.new("Frame", GUI["2"]);
+		GUI["1b"]["BorderSizePixel"] = 0;
+		GUI["1b"]["BackgroundColor3"] = Color3.fromRGB(48, 48, 48);
+		GUI["1b"]["AnchorPoint"] = Vector2.new(1, 0);
+		GUI["1b"]["BackgroundTransparency"] = 1;
+		GUI["1b"]["Size"] = UDim2.new(1, -132, 1, -42);
+		GUI["1b"]["Position"] = UDim2.new(1, -6, 0, 36);
+		GUI["1b"]["Name"] = [[ContentContainer]];
+	end
+
+	--Navigation
+
+	do
+		--Hi
+		-- StarterGui.ApolloLibrary.Main.Navigation
+		GUI["d"] = Instance.new("Frame", GUI["2"]);
+		GUI["d"]["BorderSizePixel"] = 0;
+		GUI["d"]["BackgroundColor3"] = Color3.fromRGB(67, 67, 67);
+		GUI["d"]["Size"] = UDim2.new(0, 120, 1, -30);
+		GUI["d"]["Position"] = UDim2.new(0, 0, 0, 30);
+		GUI["d"]["Name"] = [[Navigation]];
+
+		-- StarterGui.ApolloLibrary.Main.Navigation.UICorner
+		GUI["e"] = Instance.new("UICorner", GUI["d"]);
+		GUI["e"]["CornerRadius"] = UDim.new(0, 5);
+
+		-- StarterGui.ApolloLibrary.Main.Navigation.Hide
+		GUI["f"] = Instance.new("Frame", GUI["d"]);
+		GUI["f"]["BorderSizePixel"] = 0;
+		GUI["f"]["BackgroundColor3"] = Color3.fromRGB(67, 67, 67);
+		GUI["f"]["Size"] = UDim2.new(1, 0, 0, 20);
+		GUI["f"]["Name"] = [[Hide]];
+
+		-- StarterGui.ApolloLibrary.Main.Navigation.Hide2
+		GUI["10"] = Instance.new("Frame", GUI["d"]);
+		GUI["10"]["BorderSizePixel"] = 0;
+		GUI["10"]["BackgroundColor3"] = Color3.fromRGB(67, 67, 67);
+		GUI["10"]["AnchorPoint"] = Vector2.new(1, 0);
+		GUI["10"]["Size"] = UDim2.new(0, 20, 1, 0);
+		GUI["10"]["Position"] = UDim2.new(1, 0, 0, 0);
+		GUI["10"]["Name"] = [[Hide2]];
+
+		-- StarterGui.ApolloLibrary.Main.Navigation.ButtonHolder
+		GUI["11"] = Instance.new("Frame", GUI["d"]);
+		GUI["11"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["11"]["BackgroundTransparency"] = 1;
+		GUI["11"]["Size"] = UDim2.new(1, 0, 1, 0);
+		GUI["11"]["Name"] = [[ButtonHolder]];
+
+		-- StarterGui.ApolloLibrary.Main.Navigation.ButtonHolder.UIPadding
+		GUI["12"] = Instance.new("UIPadding", GUI["11"]);
+		GUI["12"]["PaddingTop"] = UDim.new(0, 8);
+		GUI["12"]["PaddingBottom"] = UDim.new(0, 8);
+
+		-- StarterGui.ApolloLibrary.Main.Navigation.ButtonHolder.UIListLayout
+		GUI["13"] = Instance.new("UIListLayout", GUI["11"]);
+		GUI["13"]["Padding"] = UDim.new(0, 1);
+		GUI["13"]["SortOrder"] = Enum.SortOrder.LayoutOrder;
+
+
+		-- StarterGui.ApolloLibrary.Main.Navigation.line
+		GUI["1a"] = Instance.new("Frame", GUI["d"]);
+		GUI["1a"]["BorderSizePixel"] = 0;
+		GUI["1a"]["BackgroundColor3"] = Color3.fromRGB(44, 44, 44);
+		GUI["1a"]["Size"] = UDim2.new(0, 1, 1, 0);
+		GUI["1a"]["Position"] = UDim2.new(1, 0, 0, 0);
+		GUI["1a"]["Name"] = [[line]];
+	end
+		function GUI:CreateTab(options)
+			options = Library:validate({
+				name = "Preview tab",
+				Icon = "rbxassetid://11999485414"
+			}, options or {}) -- if options ==nil then give table otherwise give options 
+
+		local Tab = {
+			Hover = false,
+			Active = false
+		}
+		
+		if GUI.CurrentTab == nil then
+			GUI.CurrentTab = Tab
+		end
+		
+		--Button Holder
+		do 
+			-- StarterTab.ApolloLibrary.Main.Navigation.ButtonHolder.Inactive
+			Tab["17"] = Instance.new("TextLabel", GUI["11"]);
+			Tab["17"]["BorderSizePixel"] = 0;
+			Tab["17"]["TextXAlignment"] = Enum.TextXAlignment.Left;
+			Tab["17"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+			Tab["17"]["TextSize"] = 12;
+			Tab["17"]["TextColor3"] = Color3.fromRGB(67, 67, 67);
+			Tab["17"]["Size"] = UDim2.new(1, 0, 0, 24);
+			Tab["17"]["Text"] = options.name;
+			Tab["17"]["Name"] = [[Inactive]];
+			Tab["17"]["Font"] = Enum.Font.Gotham;
+			Tab["17"]["BackgroundTransparency"] = 0.8999999761581421;
+
+			-- StarterTab.ApolloLibrary.Main.Navigation.ButtonHolder.Inactive.UIPadding
+			Tab["18"] = Instance.new("UIPadding", Tab["17"]);
+			Tab["18"]["PaddingLeft"] = UDim.new(0, 28);
+
+			-- StarterTab.ApolloLibrary.Main.Navigation.ButtonHolder.Inactive.Icon
+			Tab["19"] = Instance.new("ImageLabel", Tab["17"]);
+			Tab["19"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+			Tab["19"]["AnchorPoint"] = Vector2.new(0, 0.5);
+			Tab["19"]["Image"] = options.icon;
+			Tab["19"]["Size"] = UDim2.new(0, 20, 0, 20);
+			Tab["19"]["Name"] = [[Icon]];
+			Tab["19"]["BackgroundTransparency"] = 1;
+			Tab["19"]["Position"] = UDim2.new(0, -24, 0.5, 0);
+
+		end
+		
+
+
+		Tab["17"].MouseEnter:Connect(function()
+			Tab.Hover = true
+			
+			if not Tab.Active then
+				Library:tween(Tab["17"], {TextColor3 = Color3.fromRGB(255, 255, 255)})
+				Library:tween(Tab["19"], {ImageColor3 = Color3.fromRGB(255, 255, 255)})
+			end
+			
+		end)
+		
+		Tab["17"].MouseEnter:Connect(function()
+			Tab.Hover = false
+			
+			if not Tab.Active then
+				Library:tween(Tab["17"], {TextColor3 = Color3.fromRGB(67, 67, 67)})
+				Library:tween(Tab["19"], {ImageColor3 = Color3.fromRGB(177, 177, 177)})
+			
+				end
+
+		end)
+		
+		Tab["17"].MouseLeave:Connect(function()
+			Tab.Hover = false
+		end)
+		
+		uis.InputBegan:Connect(function(input, gpe)
+			if gpe then return end
+			
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if Tab.Hover then
+					Tab.Active = true
+			end
+			end
+		end)
+		
+		function Tab:Activate()
+			if not Tab.Active then
+				if GUI.CurrentTab ~= nil then
+					GUI.CurrentTab:Deactivate()
+				end
+			Tab.Active = true
+
+				Library:tween(Tab["17"], {TextColor3 = Color3.fromRGB(255, 255, 255)})
+				Library:tween(Tab["19"], {ImageColor3 = Color3.fromRGB(255, 255, 255)})
+				Library:tween(Tab["19"], {BackgroundTransparency = .8})
+		end
+		GUI.CurrentTab = Tab
+			function Tab:Deactivate()
+				
+			end
+			end
+				if Tab.Active then
+					Tab.Active = false 
+					Tab.Hover = false
+					Library:tween(Tab["17"], {TextColor3 = Color3.fromRGB(67, 67, 67)})
+					Library:tween(Tab["19"], {ImageColor3 = Color3.fromRGB(177, 177, 177)})
+					Library:tween(Tab["19"], {BackgroundTransparency = 1})
+		end
+		
+		if GUI.CurrentTab == nil then
+			Tab:Activate()
+		end
+		
+	return Tab
+		
+	end
+
+	return GUI
+end
+
+local main = Library:new{
+	name = "Fixed"
+}
+
+
+local tab = main:CreateTab({
+	name = "what",
+	icon = "rbxassetid://11999485414"
+})
+
+local tab2 = main:CreateTab({
+	name = "bruh",
+	icon = "rbxassetid://11999485414"
+})
+
+local tab3 = main:CreateTab({
+	name = "Chicken",
+	icon = "rbxassetid://11999485414"
+})
+
+
